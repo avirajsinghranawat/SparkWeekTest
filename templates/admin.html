@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz - Admin Panel</title>
+    <link rel="stylesheet" href="/static/css/styles.css">
+</head>
+<body>
+    <!-- Login Screen -->
+    <div id="login-screen" class="screen active">
+        <div class="container">
+            <h1>Admin Login</h1>
+            <div class="card">
+                <form id="login-form">
+                    <div class="form-group">
+                        <label for="username">Username</label>
+                        <input type="text" id="username" name="username" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="password" id="password" name="password" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Login</button>
+                    <div id="login-error" class="error-message"></div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Admin Dashboard -->
+    <div id="dashboard-screen" class="screen">
+        <div class="admin-header">
+            <h1>Quiz Admin Dashboard</h1>
+            <button id="logout-btn" class="btn btn-secondary">Logout</button>
+        </div>
+
+        <!-- Tabs -->
+        <div class="tabs">
+            <button class="tab-btn active" data-tab="participants">Participants</button>
+            <button class="tab-btn" data-tab="questions">Questions</button>
+            <button class="tab-btn" data-tab="quiz-control">Quiz Control</button>
+        </div>
+
+        <!-- Participants Tab -->
+        <div id="participants-tab" class="tab-content active">
+            <div class="admin-section">
+                <div class="section-header">
+                    <h2>Participant Scores</h2>
+                    <select id="location-filter" class="location-select">
+                        <option value="BLR">BLR</option>
+                        <option value="HTC">HTC</option>
+                        <option value="Noida">Noida</option>
+                    </select>
+                    <button id="refresh-participants-btn" class="btn btn-secondary">🔄 Refresh</button>
+                </div>
+                
+                <div class="table-container">
+                    <table class="participants-table">
+                        <thead>
+                            <tr>
+                                <th>Rank</th>
+                                <th>SSO</th>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Score</th>
+                                <th class="hide-mobile">Submitted At</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="participants-tbody">
+                            <tr>
+                                <td colspan="7" class="loading">Loading participants...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Questions Tab -->
+        <div id="questions-tab" class="tab-content">
+            <div class="admin-section">
+                <div class="section-header">
+                    <h2>Manage Questions</h2>
+                    <select id="questions-location-filter" class="location-select">
+                        <option value="BLR">BLR</option>
+                        <option value="HTC">HTC</option>
+                        <option value="Noida">Noida</option>
+                    </select>
+                    <button id="add-question-btn" class="btn btn-primary">+ Add Question</button>
+                </div>
+                
+                <div id="questions-list" class="questions-list">
+                    <p class="loading">Loading questions...</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quiz Control Tab -->
+        <div id="quiz-control-tab" class="tab-content">
+            <div class="admin-section">
+                <div class="section-header">
+                    <h2>Quiz Status Control</h2>
+                    <button id="refresh-quiz-status-btn" class="btn btn-secondary">🔄 Refresh</button>
+                </div>
+                <p>Open or close quiz for each location:</p>
+                
+                <div id="quiz-status-controls" class="quiz-controls">
+                    <p class="loading">Loading quiz status...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Question Modal -->
+    <div id="question-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2 id="modal-title">Add Question</h2>
+            
+            <form id="question-form">
+                <input type="hidden" id="question-id">
+                
+                <div class="form-group">
+                    <label>Question Text *</label>
+                    <textarea id="question-text" required rows="3"></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label>Question Type *</label>
+                    <select id="question-type" required>
+                        <option value="single">Single Choice</option>
+                        <option value="multiple">Multiple Choice</option>
+                        <option value="truefalse">True/False</option>
+                        <option value="text">Text Input</option>
+                    </select>
+                </div>
+                
+                <div class="form-group" id="options-group">
+                    <label>Options</label>
+                    <div id="options-list"></div>
+                    <button type="button" id="add-option-btn" class="btn btn-secondary btn-sm">+ Add Option</button>
+                </div>
+                
+                <div class="form-group" id="truefalse-group" style="display: none;">
+                    <label>Correct Answer *</label>
+                    <div class="radio-group">
+                        <label class="radio-label">
+                            <input type="radio" name="truefalse-answer" value="True"> True
+                        </label>
+                        <label class="radio-label">
+                            <input type="radio" name="truefalse-answer" value="False"> False
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="form-group" id="text-answer-group" style="display: none;">
+                    <label>Correct Answer *</label>
+                    <input type="text" id="text-correct-answer" placeholder="Enter correct answer">
+                </div>
+                
+                <div class="form-group">
+                    <label id="points-label">Points *</label>
+                    <input type="number" id="question-points" min="1" value="1" required>
+                    <small class="help-text" id="points-help" style="display: none;">Points per correct option for multiple choice</small>
+                </div>
+                
+                <div class="button-group">
+                    <button type="submit" class="btn btn-primary">Save Question</button>
+                    <button type="button" class="btn btn-secondary" onclick="closeQuestionModal()">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="/static/js/admin.js"></script>
+</body>
+</html>

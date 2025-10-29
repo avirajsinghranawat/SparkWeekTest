@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz - Participant</title>
+    <link rel="stylesheet" href="/static/css/styles.css">
+</head>
+<body>
+    <!-- Registration Screen -->
+    <div id="registration-screen" class="screen active">
+        <div class="container">
+            <h1>GE Vernova Product Quiz</h1>
+            <div class="card">
+                <h2>Register for Quiz</h2>
+                <form id="registration-form">
+                    <div class="form-group">
+                        <label for="sso">SSO (9 digits) *</label>
+                        <input type="text" id="sso" name="sso" required 
+                               pattern="\d{9}" 
+                               placeholder="123456789"
+                               maxlength="9"
+                               title="SSO must be exactly 9 digits">
+                        <small class="help-text">Enter your 9-digit SSO number</small>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="name">Full Name *</label>
+                        <input type="text" id="name" name="name" required placeholder="John Doe">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">GE Vernova Email *</label>
+                        <input type="email" id="email" name="email" required 
+                               pattern="[a-zA-Z0-9._%+-]+@gevernova\.com$"
+                               placeholder="john.doe@gevernova.com"
+                               title="Email must end with @gevernova.com">
+                        <small class="help-text">Must be a valid @gevernova.com email address</small>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="location">Select Location *</label>
+                        <select id="location" name="location" required>
+                            <option value="">-- Choose Location --</option>
+                            <option value="BLR">BLR</option>
+                            <option value="HTC">HTC</option>
+                            <option value="Noida">Noida</option>
+                        </select>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary">Start Quiz</button>
+                    <div id="register-error" class="error-message"></div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quiz Screen -->
+    <div id="quiz-screen" class="screen">
+        <!-- Hamburger Menu -->
+        <div class="hamburger-menu" id="hamburger-menu">
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+        </div>
+
+        <!-- Sidebar -->
+        <div class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <h3>Quiz Navigation</h3>
+                <p id="participant-info"></p>
+            </div>
+            <div class="question-nav" id="question-nav">
+                <!-- Question buttons will be generated here -->
+            </div>
+            <button id="submit-quiz-btn" class="btn btn-danger">Submit Quiz</button>
+        </div>
+
+        <!-- Main Quiz Content -->
+        <div class="quiz-content">
+            <div class="question-container" id="question-container">
+                <!-- Questions will be loaded here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Submit Confirmation Screen -->
+    <div id="submit-confirm-screen" class="screen">
+        <div class="container">
+            <div class="card">
+                <h2>⚠️ Confirm Submission</h2>
+                <p>Are you sure you want to submit your quiz?</p>
+                <p><strong>Warning:</strong> You cannot change your answers after submission!</p>
+                <div id="unanswered-warning" class="error-message"></div>
+                <div class="button-group">
+                    <button id="confirm-submit-btn" class="btn btn-danger">Yes, Submit</button>
+                    <button id="cancel-submit-btn" class="btn btn-secondary">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Success Screen -->
+    <div id="success-screen" class="screen">
+        <div class="container">
+            <div class="card success-card">
+                <h1>✅ Quiz Submitted Successfully!</h1>
+                <div class="score-display">
+                    <h2>Your Score</h2>
+                    <div class="score-value" id="final-score">--</div>
+                </div>
+                <div class="success-message">
+                    <p>Thank you for participating!</p>
+                    <p><strong>Note:</strong> Winners will be announced at the end of the event.</p>
+                    <p class="ranking-info">🏆 Rankings are based on highest score and earliest submission time.</p>
+                </div>
+                <a href="/" class="btn btn-primary">Back to Home</a>
+            </div>
+        </div>
+    </div>
+
+    <script src="/static/js/participant.js"></script>
+</body>
+</html>
