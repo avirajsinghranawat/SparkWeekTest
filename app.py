@@ -573,3 +573,11 @@ if __name__ == '__main__':
         print("2. .env file exists with correct DATABASE_URL")
         print("3. Database is accessible")
 
+# Initialize database when app is loaded (for production servers like Gunicorn)
+try:
+    get_db_pool()
+    print("✓ Database connection successful!")
+    check_and_initialize_database()
+except Exception as e:
+    print(f"⚠ Warning: Database initialization failed: {e}")
+    print("The app will attempt to connect when first request is made.")
