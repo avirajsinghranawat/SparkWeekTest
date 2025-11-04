@@ -207,6 +207,7 @@ function renderQuestion(index) {
         <div class="question-navigation-buttons">
             ${index > 0 ? '<button class="btn btn-secondary" onclick="navigateToQuestion(' + (index - 1) + ')">Previous</button>' : ''}
             ${index < quizData.questions.length - 1 ? '<button class="btn btn-primary" onclick="navigateToQuestion(' + (index + 1) + ')">Next</button>' : ''}
+            ${index === quizData.questions.length - 1 ? '<button class="btn btn-danger" onclick="submitQuiz()" style="margin-left: 10px;">Submit Quiz</button>' : ''}
         </div>
     `;
     
@@ -288,8 +289,8 @@ function updateQuestionNavigation() {
     });
 }
 
-// Submit Quiz Button
-document.getElementById('submit-quiz-btn').addEventListener('click', () => {
+// Submit Quiz Function (can be called from anywhere)
+function submitQuiz() {
     saveCurrentAnswer();
     
     const totalQuestions = quizData.questions.length;
@@ -303,6 +304,11 @@ document.getElementById('submit-quiz-btn').addEventListener('click', () => {
     }
     
     showScreen('submit-confirm-screen');
+}
+
+// Submit Quiz Button in Sidebar
+document.getElementById('submit-quiz-btn').addEventListener('click', () => {
+    submitQuiz();
 });
 
 // Confirm Submit
